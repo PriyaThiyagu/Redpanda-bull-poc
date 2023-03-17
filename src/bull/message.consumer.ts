@@ -9,14 +9,18 @@ export class MessageConsumer {
     @Process('message-job')
     async messagejob(job: Job<any>) {
         console.log(job.data);
-        await this.producerService.produce({
-            topic:'chat-room',
-            messages:[
-                {
-                    value:`user profile created succesfully for ${job.data['userName']}`
-                }
-            ]
-        })
+        const topic='chat-room';
+        const partition=1;
+        const message=`user profile created succesfully for ${job.data['userName']}`;
+        await this.producerService.produce_message(topic,partition,message)
+        // await this.producerService.produce({
+        //     topic:'chat-room',
+        //     messages:[
+        //         {
+        //             value:`user profile created succesfully for ${job.data['userName']}`
+        //         }
+        //     ]
+        // })
     }
 
     @Process('message-job1')
